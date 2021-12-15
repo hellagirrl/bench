@@ -1,69 +1,87 @@
 <template>
-  <div class="d-flex flex-column login-flex">
-    <nav class="navbar navbar-light navbar-expand login-nav">
-      <div class="header-nav">
-        <a href="http://freedvs.com/" class="navbar-brand">Benchkiller</a>
-      </div>
+  <div class="d-flex flex-column login-flex justify-content-between">
+    <nav class="navbar navbar-dark navbar-expand-mb login-nav py-2 px-3">
+      <a href="/" class="navbar-brand">Benchkiller</a>
     </nav>
     <main class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <form style="margin-block-end: 1em">
+      <Toast v-if="showToast" />
+      <div class="row mx-n3">
+        <div class="col-md-6 form px-3">
+          <form class="form mb-3" @submit.prevent="onSubmit">
             <div class="mb-3">
-              <label for="exampleInputEmail1" class="form-label"
-                >Ваш никнейм в telegram</label
-              >
+              <label for="userTelegram" class="form-label">{{
+                $t("message.nickname")
+              }}</label>
               <input
-                type="email"
+                type="text"
                 class="form-control"
-                id="exampleInputEmail1"
-                aria-describedby="emailHelp"
+                id="userTelegram"
+                v-model="userTelegram"
               />
             </div>
             <div class="mb-3">
-              <label for="exampleInputPassword1" class="form-label"
-                >Пароль</label
-              >
+              <label for="userPassword" class="form-label">{{
+                $t("message.password")
+              }}</label>
               <input
                 type="password"
                 class="form-control"
-                id="exampleInputPassword1"
+                id="userPassword"
+                v-model="userPassword"
               />
             </div>
-            <button
-              type="submit"
-              class="btn btn-success"
-              style="background-color: #28a745"
-            >
-              Войти
+            <button type="submit" id="liveToastBtn" class="btn btn-success">
+              {{ $t("message.loginButton") }}
             </button>
           </form>
           <div class="alert alert-primary" role="alert">
-            Впервые у нас? Перейдите в нашего
+            <span>{{ $t("message.alertMessage1") }}</span>
             <a
+              class="text-decoration-none"
               target="_blank"
               rel="noopener noreferrer"
               href="https://t.me/benchkiller_test_bot"
-              >бота</a
+              >{{ $t("message.botLink") }}</a
             >
-            и сгенерируйте себе пароль.
+            {{ $t("message.alertMessage2") }}
           </div>
         </div>
       </div>
     </main>
-    <footer>
-      <div class="container">© Benchkiller 2021</div>
+    <footer class="footer pb-3">
+      <div class="container">
+        © Benchkiller 2021<span v-if="currentYear > 2021">
+          - {{ currentYear }}</span
+        >
+      </div>
     </footer>
   </div>
 </template>
 
 <script>
+import { ref } from "vue";
+import Toast from "@/components/Toast";
+import _ from "underscore";
 export default {
-  name: "Login",
-  data() {
-    return {};
+  components: { Toast },
+  setup() {
+    const currentYear = new Date().getFullYear();
+    const userTelegram = ref("");
+    const userPassword = ref("");
+    const showToast = ref(false);
+    const onSubmit = () => {
+      if (_.isEmpty(userTelegram.value) && _.isEmpty(userPassword.value)) {
+        showToast.value = true;
+        setTimeout(() => (showToast.value = false), 10000);
+      }
+    };
+    return {
+      currentYear,
+      onSubmit,
+      showToast,
+      userTelegram,
+      userPassword,
+    };
   },
 };
 </script>
-
-<style></style>
