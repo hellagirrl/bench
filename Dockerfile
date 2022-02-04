@@ -1,0 +1,12 @@
+FROM node:12
+
+ARG VUE_APP_API_URL
+ARG NODE_ENV=test
+
+ENV VUE_APP_API_URL=$VUE_APP_API_URL
+ENV NODE_ENV=$NODE_ENV
+
+COPY ./package.json .
+RUN yarn
+COPY . .
+CMD yarn lint
