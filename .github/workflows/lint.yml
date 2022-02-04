@@ -8,9 +8,10 @@ on:
 
 jobs:
   lint:
+    runs-on: ubuntu-latest
+
     steps:
       - name: Run linter
-        uses: docker
         run: |
           docker build . -t linter
           docker run linter
