@@ -8,8 +8,6 @@ on:
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
-
     steps:
       - name: Run linter
         uses: docker
