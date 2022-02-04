@@ -13,5 +13,5 @@ jobs:
     steps:
       - name: Run linter
         run: |
-          docker build . -t linter
+          docker build ../ -t linter
           docker run linter
